@@ -8,6 +8,11 @@
   <artifactId>helloworld</artifactId>
   <dependencies>
       <dependency>
+          <groupId>cc.mallet</groupId>
+          <artifactId>mallet</artifactId>
+          <version>2.0.7</version>
+      </dependency>
+      <dependency>
           <groupId>org.mongodb</groupId>
           <artifactId>mongo-java-driver</artifactId>
           <version>2.13.1</version>
