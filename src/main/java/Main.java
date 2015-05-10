@@ -16,16 +16,16 @@ public class Main extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
-        if (req.getRequestURI().endsWith("/new-job?")) {
-            String userId = req.getRequestURI().split("/new_job?")[1];
+        //if (req.getRequestURI().contains("/new-job?")) {
+            String userId = req.getParameter("id");;
             System.out.println(userId);
             ClassificationRunner R1 = new ClassificationRunner(userId);
             R1.start();
             resp.getWriter().print("400. Successful. User posts are being analyzed.");
-        }
-        else {
-            showHome(req,resp);
-        }
+        //}
+        //else {
+        //    showHome(req,resp);
+        //}
     }
 
     private void showHome(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

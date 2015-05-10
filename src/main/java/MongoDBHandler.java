@@ -2,17 +2,15 @@ import com.mongodb.*;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class MongoDBHandler {
 
     public static DB db;
-    public static DBCollection coll;
+    public static DBCollection postColl;
+    public static DBCollection activityColl;
 
     public MongoDBHandler() throws UnknownHostException {
         // To directly connect to a single MongoDB server (note that this will not auto-discover the primary even
@@ -21,7 +19,8 @@ public class MongoDBHandler {
         MongoCredential credential = MongoCredential.createCredential("holiday-radar", "holiday-radar", new char[] {'h', 'o', 'l', 'i', 'd', 'a', 'y'});
         MongoClient mongoClient = new MongoClient(address, Arrays.asList(credential));
         this.db = mongoClient.getDB( "holiday-radar" );
-        this.coll = this.db.getCollection("social_data");
+        this.postColl = this.db.getCollection("social_data");
+        this.activityColl = this.db.getCollection("activities");
     }
 
     /**
@@ -32,7 +31,7 @@ public class MongoDBHandler {
         List<String> posts = new ArrayList<String>();
 
         BasicDBObject query = new BasicDBObject("user_id", userId);
-        DBCursor cursor = coll.find(query);
+        DBCursor cursor = postColl.find(query);
         try {
             while (cursor.hasNext()) {
                 DBObject next = cursor.next();
@@ -45,6 +44,15 @@ public class MongoDBHandler {
         }
 
         return posts;
+    }
+
+    public void saveUserActivities(List<Map.Entry<String, Double>> list, String userId) {
+        BasicDBObject doc = new BasicDBObject("user_id", userId);
+        for (Map.Entry<String, Double> entry : list) {
+            doc.append(entry.getKey(), entry.getValue());
+        }
+
+        activityColl.insert(doc);
     }
 
     public static void main(String[] args) throws UnknownHostException {

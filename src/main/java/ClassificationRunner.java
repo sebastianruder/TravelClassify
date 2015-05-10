@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sebastian on 10/05/15.
@@ -61,7 +62,8 @@ public class ClassificationRunner implements Runnable {
 
         writer.close();
 
-        docClassifier.printLabelings(classifier, new File(tempFile));
+        List<Map.Entry<String, Double>> list = docClassifier.printLabelings(classifier, new File(tempFile));
+        handler.saveUserActivities(list, userId);
     }
 
     public void start ()

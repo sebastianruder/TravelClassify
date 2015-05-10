@@ -3,7 +3,7 @@
  */
 
 import java.io.*;
-import java.util.Iterator;
+import java.util.*;
 
 import cc.mallet.classify.*;
 import cc.mallet.pipe.*;
@@ -63,7 +63,7 @@ public class DocumentClassifier
         oos.close();
     }
 
-    public void printLabelings(Classifier classifier, File file) throws IOException {
+    public List<Map.Entry<String, Double>> printLabelings(Classifier classifier, File file) throws IOException {
 
         // Create a new iterator that will read raw instance data from
         //  the lines of a file.
@@ -88,18 +88,52 @@ public class DocumentClassifier
         //  that includes the instance, the classifier, and the
         //  classification results (the labeling). Here we only
         //  care about the Labeling.
+
+        Map<String, Double> scoreMap = new HashMap<String, Double>();
         while (instances.hasNext()) {
             Labeling labeling = classifier.classify(instances.next()).getLabeling();
 
             // print the labels with their weights in descending order (ie best first)
 
             for (int rank = 0; rank < labeling.numLocations(); rank++){
-                System.out.print(labeling.getLabelAtRank(rank) + ":" +
-                        labeling.getValueAtRank(rank) + " ");
-            }
-            System.out.println();
+                String label = labeling.getLabelAtRank(rank).toString();
+                double score = labeling.getValueAtRank(rank);
+                if (scoreMap.containsKey(label)) {
+                    scoreMap.put(label, scoreMap.get(label) + score);
+                }
+                else {
+                    scoreMap.put(label, score);
+                }
 
+                System.out.print(label + ":" + score + " ");
+            }
+
+            System.out.println();
         }
+
+        List<Map.Entry<String, Double>> list = sortByValue(scoreMap);
+        for (Map.Entry<String, Double> entry : list) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+
+        return list;
+
+    }
+
+    public static <K, V extends Comparable<? super V>> List<Map.Entry<K, V>>
+    sortByValue( Map<K, V> map )
+    {
+        List<Map.Entry<K, V>> list =
+                new LinkedList<Map.Entry<K, V>>( map.entrySet() );
+        Collections.sort( list, new Comparator<Map.Entry<K, V>>()
+        {
+            public int compare( Map.Entry<K, V> o1, Map.Entry<K, V> o2 )
+            {
+                return - (o1.getValue()).compareTo( o2.getValue() );
+            }
+        } );
+
+        return list;
     }
 
 }
