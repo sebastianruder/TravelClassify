@@ -9,6 +9,7 @@ import org.eclipse.jetty.servlet.*;
 
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 
 public class Main extends HttpServlet {
 
@@ -20,8 +21,8 @@ public class Main extends HttpServlet {
             String userId = req.getParameter("id");;
             System.out.println(userId);
             ClassificationRunner R1 = new ClassificationRunner(userId);
-            R1.runClassification(); // at the moment run asynchronously
-            resp.getWriter().print("400. Successful. User posts are being analyzed. Userid: " + userId);
+            List<Map.Entry<String, Double>> list = R1.runClassification(); // at the moment run asynchronously
+            resp.getWriter().print("400. Successful. User posts have been analyzed. Userid: " + userId + "\n");
         //}
         //else {
         //    showHome(req,resp);

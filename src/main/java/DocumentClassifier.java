@@ -116,7 +116,7 @@ public class DocumentClassifier
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
 
-        return list;
+        return list.subList(0, 5);
 
     }
 

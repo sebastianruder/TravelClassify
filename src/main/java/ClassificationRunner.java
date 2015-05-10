@@ -26,7 +26,7 @@ public class ClassificationRunner implements Runnable {
         runClassification();
     }
 
-    public void runClassification() {
+    public List<Map.Entry<String, Double>> runClassification() {
         System.out.println("Running " +  threadName );
         try {
             handler = new MongoDBHandler();
@@ -46,17 +46,18 @@ public class ClassificationRunner implements Runnable {
             System.out.println("Classifier file not found.");
         }
         System.out.println("Classifier loaded.");
+        List<Map.Entry<String, Double>> list = null;
         try {
-            classifyPosts(threadName);
+            list = classifyPosts(threadName);
         }
         catch (IOException ex) {
             System.out.println("File not found");
         }
 
-        System.out.println("Thread " +  threadName + " exiting.");
+        return list;
     }
 
-    private void classifyPosts(String userId) throws IOException {
+    private List<Map.Entry<String, Double>> classifyPosts(String userId) throws IOException {
         List<String> posts = handler.getPosts(userId);
         String tempFile = String.format("%s.temp", userId);
         PrintWriter writer = new PrintWriter(tempFile, "UTF-8");
@@ -67,7 +68,16 @@ public class ClassificationRunner implements Runnable {
         writer.close();
 
         List<Map.Entry<String, Double>> list = docClassifier.printLabelings(classifier, new File(tempFile));
+        File file = new File(tempFile);
+        if (file.delete()) {
+            System.out.println("File deleted successfully.");
+        }
+        else {
+            System.out.println("File couldn't be deleted.");
+        }
+
         handler.saveUserActivities(list, userId);
+        return list;
     }
 
     public void start ()
