@@ -54,6 +54,10 @@ public class ClassificationRunner implements Runnable {
             System.out.println("File not found");
         }
 
+        for (Map.Entry<String, Double> entry : list) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+
         return list;
     }
 
@@ -82,7 +86,6 @@ public class ClassificationRunner implements Runnable {
 
     public void start ()
     {
-        System.out.println("Starting " +  threadName );
         if (t == null)
         {
             t = new Thread (this, threadName);
