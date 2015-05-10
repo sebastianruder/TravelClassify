@@ -24,6 +24,15 @@ public class Main extends HttpServlet {
             String userId = req.getRequestURI().split("/new_job?")[1];
             System.out.println(userId);
             resp.getWriter().print("400. Successful. User posts are being analyzed.");
+            handler = new MongoDBHandler();
+            docClassifier = new DocumentClassifier();
+            String classifierFile = "activities.classifier";
+            try {
+                classifier = docClassifier.loadClassifier(new File(classifierFile));
+            }
+            catch (ClassNotFoundException ex) {
+                resp.getWriter().print("Classifier couldn't be loaded.");
+            }
             classifyPosts(userId);
         }
         else {
@@ -54,10 +63,6 @@ public class Main extends HttpServlet {
         context.setContextPath("/");
         server.setHandler(context);
         context.addServlet(new ServletHolder(new Main()), "/*");
-        handler = new MongoDBHandler();
-        docClassifier = new DocumentClassifier();
-        String classifierFile = "activities.classifier";
-        classifier = docClassifier.loadClassifier(new File(classifierFile));
         server.start();
         server.join();
     }
