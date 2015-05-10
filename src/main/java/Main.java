@@ -12,46 +12,20 @@ import java.util.List;
 
 public class Main extends HttpServlet {
 
-    private static MongoDBHandler handler;
-    private static DocumentClassifier docClassifier;
-    private static Classifier classifier;
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
-        if (req.getRequestURI().contains("/new_job?")) {
+        if (req.getRequestURI().endsWith("/new-job?")) {
             String userId = req.getRequestURI().split("/new_job?")[1];
             System.out.println(userId);
+            ClassificationRunner R1 = new ClassificationRunner(userId);
+            R1.start();
             resp.getWriter().print("400. Successful. User posts are being analyzed.");
-            handler = new MongoDBHandler();
-            docClassifier = new DocumentClassifier();
-            String classifierFile = "activities.classifier";
-            try {
-                classifier = docClassifier.loadClassifier(new File(classifierFile));
-            }
-            catch (ClassNotFoundException ex) {
-                resp.getWriter().print("Classifier couldn't be loaded.");
-            }
-            resp.getWriter().print("Classifier loaded.");
-            classifyPosts(userId);
         }
         else {
             showHome(req,resp);
         }
-    }
-
-    private void classifyPosts(String userId) throws IOException {
-        List<String> posts = handler.getPosts(userId);
-        String tempFile = String.format("%s.temp", userId);
-        PrintWriter writer = new PrintWriter(tempFile, "UTF-8");
-        for (String post : posts) {
-            writer.printf("0\t\t%s", post);
-        }
-
-        writer.close();
-
-        docClassifier.printLabelings(classifier, new File(tempFile));
     }
 
     private void showHome(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
