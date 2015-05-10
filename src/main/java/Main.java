@@ -21,7 +21,7 @@ public class Main extends HttpServlet {
             System.out.println(userId);
             ClassificationRunner R1 = new ClassificationRunner(userId);
             R1.start();
-            resp.getWriter().print("400. Successful. User posts are being analyzed.");
+            resp.getWriter().print("400. Successful. User posts are being analyzed. Userid: " + userId);
         //}
         //else {
         //    showHome(req,resp);
