@@ -33,6 +33,7 @@ public class Main extends HttpServlet {
             catch (ClassNotFoundException ex) {
                 resp.getWriter().print("Classifier couldn't be loaded.");
             }
+            resp.getWriter().print("Classifier loaded.");
             classifyPosts(userId);
         }
         else {
