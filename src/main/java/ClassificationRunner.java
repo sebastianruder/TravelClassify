@@ -23,6 +23,10 @@ public class ClassificationRunner implements Runnable {
     }
 
     public void run() {
+        runClassification();
+    }
+
+    public void runClassification() {
         System.out.println("Running " +  threadName );
         try {
             handler = new MongoDBHandler();

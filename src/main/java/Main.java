@@ -20,7 +20,7 @@ public class Main extends HttpServlet {
             String userId = req.getParameter("id");;
             System.out.println(userId);
             ClassificationRunner R1 = new ClassificationRunner(userId);
-            R1.start();
+            R1.runClassification(); // at the moment run asynchronously
             resp.getWriter().print("400. Successful. User posts are being analyzed. Userid: " + userId);
         //}
         //else {
