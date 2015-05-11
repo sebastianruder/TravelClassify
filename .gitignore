@@ -1,8 +1,14 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Java template
 *.class
+
+# IntelliJ
 .idea/*
 *.iml
+
+# Tweets
+travel_tweets/activities/*
+travel_tweets/single_tweet_files/*
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

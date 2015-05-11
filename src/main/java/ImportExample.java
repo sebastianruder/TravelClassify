@@ -1,7 +1,3 @@
-/**
- * Created by sebastian on 09/05/15.
- */
-
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
@@ -10,6 +6,13 @@ import cc.mallet.pipe.*;
 import cc.mallet.pipe.iterator.*;
 import cc.mallet.types.*;
 
+/**
+ * Class to import data in Mallet data format.
+ * Data should be stored in .txt files in subdirectories of a directory
+ * with the subdirectory name being used as label.
+ *
+ * Created by sebastian on 09/05/15.
+ */
 public class ImportExample {
 
     Pipe pipe;
@@ -102,8 +105,8 @@ public class ImportExample {
     public static void main (String[] args) throws IOException {
 
         ImportExample importer = new ImportExample();
-        InstanceList instances = importer.readDirectory(new File("inputs/"));
-        instances.save(new File("outputs/outputs.txt"));
+        InstanceList instances = importer.readDirectory(new File("travel_tweets/activities/"));
+        instances.save(new File("activities.mallet"));
     }
 
     /** This class illustrates how to build a simple file filter */

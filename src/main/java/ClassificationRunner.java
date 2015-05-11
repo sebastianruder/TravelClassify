@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Class to run classification on threads.
+ *
  * Created by sebastian on 10/05/15.
  */
 public class ClassificationRunner implements Runnable {
@@ -61,6 +63,12 @@ public class ClassificationRunner implements Runnable {
         return list;
     }
 
+    /**
+     * Method to classify a user's posts given her id.
+     * @param userId the user id
+     * @return
+     * @throws IOException
+     */
     private List<Map.Entry<String, Double>> classifyPosts(String userId) throws IOException {
         List<String> posts = handler.getPosts(userId);
         String tempFile = String.format("%s.temp", userId);
@@ -84,6 +92,9 @@ public class ClassificationRunner implements Runnable {
         return list;
     }
 
+    /**
+     * Starts a thread.
+     */
     public void start ()
     {
         if (t == null)

@@ -1,18 +1,26 @@
-import java.io.File;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import cc.mallet.classify.Classifier;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.*;
 
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Main class to handle requests to our website
+ */
 public class Main extends HttpServlet {
 
+    /**
+     * Method for GET request. If id parameter is present, starts classification
+     * of user's posts in database.
+     * @param req the request
+     * @param resp the response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
@@ -32,10 +40,22 @@ public class Main extends HttpServlet {
         //}
     }
 
+    /**
+     * Show home screen
+     * @param req the request
+     * @param resp the response
+     * @throws ServletException
+     * @throws IOException
+     */
     private void showHome(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.getWriter().print("Hello from Java!");
     }
 
+    /**
+     * Main method which starts the server.
+     * @param args the input arguments
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         Server server = new Server(Integer.valueOf(System.getenv("PORT")));
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
